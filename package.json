@@ -10,8 +10,14 @@
     "test": "jest"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-brands-svg-icons": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-native-fontawesome": "^0.3.0",
     "react": "18.2.0",
     "react-native": "0.73.3",
+    "react-native-shadow-2": "^7.0.8",
+    "react-native-svg": "^14.1.0",
     "styled-components": "^6.1.8"
   },
   "devDependencies": {

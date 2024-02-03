@@ -1,16 +1,13 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-
+import Posts from './src/containers/Posts';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {fas} from '@fortawesome/free-solid-svg-icons';
+library.add(fas);
 function App(): React.JSX.Element {
-  // const isDarkMode = useColorScheme() === 'dark';
-  // const backgroundStyle = {
-  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  // };
-
   return (
-    <View>
-      <Text>Posts</Text>
-    </View>
+    <>
+      <Posts />
+    </>
   );
 }
 export default App;
