@@ -1,11 +1,10 @@
 import styled from 'styled-components/native';
 import {Shadow} from 'react-native-shadow-2';
-import {StyleSheet} from 'react-native';
 
 export const ShadowWrapper = styled(Shadow)`
   background-color: rgba(255, 218, 210, 0.38);
-  //align-self: stretch;
-  //border-radius: 10px;
+  align-self: stretch;
+  border-radius: 10px;
 `;
 
 export const ButtonWrapper = styled.TouchableOpacity`
@@ -20,13 +19,3 @@ export const TextWrapper = styled.Text`
   color: #431212;
   font-size: 20px;
 `;
-
-export const styles = StyleSheet.create({
-  shadowStyles: {
-    borderRadius: 10,
-    alignSelf: 'stretch',
-  },
-  shadowContainerStyles: {
-    borderRadius: 10,
-  },
-});
