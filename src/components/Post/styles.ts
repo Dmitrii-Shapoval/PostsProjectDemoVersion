@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 export const PostWrapper = styled.View`
   background-color: #faf1f4;
-  padding: 15px 15px;
+  padding: 20px 15px;
   margin-top: 10px;
   border-radius: 10px;
   flex-direction: row;
@@ -14,16 +14,20 @@ export const Icon = styled(FontAwesomeIcon)`
   color: #241a00;
 `;
 
-export const MessageCountContainer = styled.TouchableOpacity``;
+export const MessageCountContainer = styled.TouchableOpacity`
+  //background-color: blue;
+  width: 100%;
+  height: 35px;
+  align-items: center;
+  justify-content: flex-end;
+`;
 
 export const MessageCount = styled.Text`
   color: #ffe9e2;
   font-weight: bold;
   font-size: 14px;
-  z-index: 999;
   position: absolute;
-  bottom: 4px;
-  left: 7px;
+  padding-bottom: 4px;
 `;
 
 export const ContentContainer = styled.TouchableOpacity`
@@ -69,6 +73,15 @@ export const RigthButtonsContainer = styled.View`
   align-items: center;
 `;
 
-export const CloseButton = styled.TouchableOpacity``;
-
-export const EditButton = styled.View``;
+export const CloseButton = styled.TouchableOpacity`
+  width: 100%;
+  height: 35px;
+  align-items: center;
+  justify-content: flex-start;
+`;
+export const EditButton = styled.TouchableOpacity`
+  width: 100%;
+  height: 35px;
+  align-items: center;
+  justify-content: flex-end;
+`;

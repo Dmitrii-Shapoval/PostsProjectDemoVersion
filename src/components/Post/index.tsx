@@ -1,5 +1,4 @@
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
 import {
   PostWrapper,
   MessageCountContainer,
@@ -11,9 +10,9 @@ import {
   LeftButtonContainer,
   RigthButtonsContainer,
   CloseButton,
-  EditButton,
   InputDescription,
   InputTitle,
+  EditButton,
 } from './styles.ts';
 
 interface iProps {
@@ -36,6 +35,8 @@ export default ({
 }: iProps) => {
   const [titleText, setTitleText] = React.useState(title);
   const [descriptionText, setDescriptionText] = React.useState(description);
+
+  const messageCount: number = 7;
   const cancelEventHandler = () => {
     postEditClickHandler(0);
     setTitleText(title);
@@ -50,31 +51,31 @@ export default ({
     <PostWrapper>
       <LeftButtonContainer>
         {editMode ? (
-          <TouchableOpacity onPress={cancelEventHandler}>
+          <MessageCountContainer onPress={cancelEventHandler}>
             <Icon icon="ban" size={17} />
-          </TouchableOpacity>
+          </MessageCountContainer>
         ) : (
           <MessageCountContainer>
             <Icon icon="message" size={22} color={'#a13f28'} />
-            <MessageCount>{7 < 9 ? 7 : '9+'}</MessageCount>
+            <MessageCount>
+              {messageCount < 9 ? messageCount : '9+'}
+            </MessageCount>
           </MessageCountContainer>
         )}
       </LeftButtonContainer>
       {editMode ? (
         <ContentContainer>
-          <View>
-            <InputTitle
-              multiline
-              onChangeText={text => setTitleText(text)}
-              value={titleText}
-              placeholder="Введите заголовок поста"
-              maxLength={100}
-              placeholderTextColor="#847878"
-              cursorColor="#757072"
-            />
-          </View>
+          <InputTitle
+            multiline
+            onChangeText={text => setTitleText(text)}
+            value={titleText}
+            placeholder="Введите заголовок поста"
+            maxLength={100}
+            placeholderTextColor="#847878"
+            cursorColor="#757072"
+          />
           <InputDescription
-            autoFocus
+            // autoFocus
             multiline
             onChangeText={text => setDescriptionText(text)}
             value={descriptionText}
@@ -94,17 +95,15 @@ export default ({
         <CloseButton onPress={postDeletionHandler.bind(this, postId)}>
           {editMode || <Icon icon="xmark" size={24} />}
         </CloseButton>
-        <EditButton>
-          {editMode ? (
-            <TouchableOpacity onPress={postSavedHandler}>
-              <Icon icon="floppy-disk" size={17} />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={postEditClickHandler.bind(this, postId)}>
-              <Icon icon="pen" size={17} />
-            </TouchableOpacity>
-          )}
-        </EditButton>
+        {editMode ? (
+          <EditButton onPress={postSavedHandler}>
+            <Icon icon="floppy-disk" size={17} />
+          </EditButton>
+        ) : (
+          <EditButton onPress={postEditClickHandler.bind(this, postId)}>
+            <Icon icon="pen" size={17} />
+          </EditButton>
+        )}
       </RigthButtonsContainer>
     </PostWrapper>
   );
