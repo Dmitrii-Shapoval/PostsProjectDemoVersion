@@ -1,0 +1,22 @@
+{
+	"android": {
+		"debug": {},
+		"release": {
+			"keystore": "android.keystore",
+			"alias": "posts",
+			"keystoreType": "jks",
+			"password": "************************************",
+			"storePassword": "*********************************",
+			"packageType": "bundle"
+		}
+	},
+	"ios": {
+		"release": {
+			"codeSignIdentity": "iPhone Developer",
+			"developmentTeam": "PS72XSLDI"
+		},
+		"debug": {
+			"developmentTeam": "PS72XSLDI"
+		}
+	}
+}
