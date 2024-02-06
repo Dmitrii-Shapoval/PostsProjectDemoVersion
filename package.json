@@ -8,6 +8,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
+    "clean_build": "cd ./scripts/ && node clean_build_folder_for_android.js",
     "build:android": "cd android && ./gradlew assembleRelease && mkdir -p ../_.abb-bundle_and_apk-release && mv app/build/outputs/apk/release/app-release.apk ../_.abb-bundle_and_apk-release/app-release.apk"
   },
   "dependencies": {
