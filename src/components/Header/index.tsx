@@ -13,6 +13,7 @@ const Header = ({title}: iProps) => {
   return (
     <ShadowWrapper
       distance={15}
+      offset={[0, 2]}
       containerStyle={shadowContainerStyles}
       style={shadowStyles}>
       <HeaderWrapper>

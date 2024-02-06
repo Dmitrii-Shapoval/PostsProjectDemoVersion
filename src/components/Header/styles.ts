@@ -26,9 +26,9 @@ export const Icon = styled(FontAwesomeIcon)`
 
 export const styles = StyleSheet.create({
   shadowStyles: {
-    width: '100%',
+    alignSelf: 'stretch',
   },
   shadowContainerStyles: {
-    width: '100%',
+    alignSelf: 'stretch',
   },
 });
