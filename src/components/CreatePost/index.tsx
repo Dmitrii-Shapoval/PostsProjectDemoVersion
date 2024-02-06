@@ -20,6 +20,11 @@ interface iProps {
 export default ({visible, visibilityHandler}: iProps) => {
   const [titleText, setTitleText] = React.useState('');
   const [descriptionText, setDescriptionText] = React.useState('');
+  const windowCloseHandler = () => {
+    visibilityHandler();
+    setTitleText('');
+    setDescriptionText('');
+  };
 
   return (
     <Modal animationType="fade" transparent={true} visible={visible}>
@@ -27,7 +32,7 @@ export default ({visible, visibilityHandler}: iProps) => {
         <CreatePostContainer>
           <TitleContainer>
             <Title>COЗДАТЬ НОВЫЙ ПОСТ</Title>
-            <IconContainer onPress={visibilityHandler}>
+            <IconContainer onPress={windowCloseHandler}>
               <Icon icon="xmark" size={22} />
             </IconContainer>
           </TitleContainer>
@@ -44,13 +49,12 @@ export default ({visible, visibilityHandler}: iProps) => {
           </InputContainer>
           <InputContainer>
             <InputDescription
-              editable
               multiline
               numberOfLines={5}
               onChangeText={text => setDescriptionText(text)}
               value={descriptionText}
               placeholder="Введите описание поста"
-              maxLength={400}
+              maxLength={800}
               placeholderTextColor="#847878"
               cursorColor="#757072"
             />

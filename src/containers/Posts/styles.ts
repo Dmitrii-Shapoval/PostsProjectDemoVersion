@@ -10,7 +10,7 @@ export const PostsWrapper = styled.View`
 `;
 
 export const PostsList = styled.FlatList`
-  background-color: chartreuse;
+  //background-color: chartreuse;
   height: 100%;
   width: 90%;
   z-index: -999;
