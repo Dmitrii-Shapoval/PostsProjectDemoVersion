@@ -16,11 +16,22 @@ import RectangularButton from '../RectangularButton';
 interface iProps {
   visible: boolean;
   visibilityHandler: any;
+  postCreateHandler: any;
 }
-export default ({visible, visibilityHandler}: iProps) => {
-  const [titleText, setTitleText] = React.useState('');
-  const [descriptionText, setDescriptionText] = React.useState('');
-  const windowCloseHandler = () => {
+export default ({visible, visibilityHandler, postCreateHandler}: iProps) => {
+  const [titleText, setTitleText] = React.useState<string>('');
+  const [descriptionText, setDescriptionText] = React.useState<string>('');
+  const windowCloseHandler = (): void => {
+    visibilityHandler();
+    setTitleText('');
+    setDescriptionText('');
+  };
+  const saveChangeHandler = (): void => {
+    postCreateHandler({
+      id: Date.now(),
+      title: titleText,
+      body: descriptionText,
+    });
     visibilityHandler();
     setTitleText('');
     setDescriptionText('');
@@ -42,7 +53,7 @@ export default ({visible, visibilityHandler}: iProps) => {
               placeholder="Введите заголовок поста"
               maxLength={100}
               placeholderTextColor="#847878"
-              onChangeText={text => setTitleText(text)}
+              onChangeText={(text: string) => setTitleText(text)}
               value={titleText}
               cursorColor="#757072"
             />
@@ -51,7 +62,7 @@ export default ({visible, visibilityHandler}: iProps) => {
             <InputDescription
               multiline
               numberOfLines={5}
-              onChangeText={text => setDescriptionText(text)}
+              onChangeText={(text: string) => setDescriptionText(text)}
               value={descriptionText}
               placeholder="Введите описание поста"
               maxLength={800}
@@ -60,7 +71,7 @@ export default ({visible, visibilityHandler}: iProps) => {
             />
           </InputContainer>
           <RectangularButton
-            onPress={visibilityHandler}
+            onPress={saveChangeHandler}
             text="Save"
             disableShadow={!visible}
           />

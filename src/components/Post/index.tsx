@@ -33,34 +33,35 @@ export default ({
   postDeletionHandler,
   editMode,
 }: iProps) => {
-  const [titleText, setTitleText] = React.useState(title);
-  const [descriptionText, setDescriptionText] = React.useState(description);
-  const [contentSize, setContentSize] = useState(100);
-  const [titleHeight, setTitleHeight] = useState(100);
-  const [descriptionHeight, setDescriptionHeight] = useState(500);
+  const [titleText, setTitleText] = React.useState<string>(title);
+  const [descriptionText, setDescriptionText] =
+    React.useState<string>(description);
+  const [contentSize, setContentSize] = useState<number>(100);
+  const [titleHeight, setTitleHeight] = useState<number>(100);
+  const [descriptionHeight, setDescriptionHeight] = useState<number>(500);
 
   const messageCount: number = 7;
-  const cancelEventHandler = () => {
+  const cancelEventHandler = (): void => {
     postEditClickHandler(0);
     setTitleText(title);
     setDescriptionText(description);
   };
-  const postSavedHandler = () => {
+  const postSavedHandler = (): void => {
     postEditClickHandler(0);
-    postUpdateHandler(postId, {title: titleText, body: descriptionText});
+    postUpdateHandler({id: postId, title: titleText, body: descriptionText});
   };
 
-  const contentHeightHandler = (e: any) => {
+  const contentHeightHandler = (e: any): void => {
     const {height} = e.nativeEvent.layout;
     setContentSize(height);
   };
 
-  const titleHeightHandler = (e: any) => {
+  const titleHeightHandler = (e: any): void => {
     const {height} = e.nativeEvent.layout;
     setTitleHeight(height);
   };
 
-  const descriptionHeightHandler = (e: any) => {
+  const descriptionHeightHandler = (e: any): void => {
     const {height} = e.nativeEvent.layout;
     setDescriptionHeight(height);
   };
@@ -86,7 +87,7 @@ export default ({
           <InputTitle
             multiline
             height={titleHeight}
-            onChangeText={text => setTitleText(text)}
+            onChangeText={(text: string) => setTitleText(text)}
             value={titleText}
             placeholder="Введите заголовок"
             maxLength={100}
@@ -97,7 +98,7 @@ export default ({
             autoFocus
             multiline
             height={descriptionHeight}
-            onChangeText={text => setDescriptionText(text)}
+            onChangeText={(text: string) => setDescriptionText(text)}
             value={descriptionText}
             placeholder="Введите описание поста"
             maxLength={800}

@@ -5,18 +5,18 @@ import Header from '../../components/Header';
 import RoundButton from '../../components/RoundВutton';
 import CreatePost from '../../components/CreatePost';
 import Post from '../../components/Post';
-import DATA from '../../assets/data/data.ts';
+import {DATA, iPost} from '../../assets/data/data.ts';
 
 const Posts = () => {
-  const [data, setData] = useState(DATA);
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const [createPostVisible, setCreatePostVisible] = useState(false);
-  const [postEditClick, setPostEditClick] = useState(0);
+  const [data, setData] = useState<Array<iPost>>(DATA);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState<boolean>(false);
+  const [createPostVisible, setCreatePostVisible] = useState<boolean>(false);
+  const [postEditClick, setPostEditClick] = useState<number>(0);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
-      () => {
+      (): void => {
         setIsKeyboardVisible(true);
       },
     );
@@ -27,7 +27,7 @@ const Posts = () => {
       },
     );
 
-    return () => {
+    return (): void => {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
@@ -37,7 +37,6 @@ const Posts = () => {
 
   const postEditClickHandler = (postId: number): void => {
     setPostEditClick(postId);
-    console.log('postId:', postId);
   };
 
   const postDeletionHandler = (postId: number): void => {
@@ -47,15 +46,20 @@ const Posts = () => {
     });
   };
 
-  const postUpdateHandler = (postId: number, newData: object): void => {
-    setData((prevState: Array<object>): any => {
-      const updatedData: any[] = prevState.map((item: any) => {
-        if (item.id === postId) {
-          return {...item, ...newData}; // Обновляем данные элемента
+  const postUpdateHandler = (newData: iPost): void => {
+    setData((prevState: Array<iPost>): any => {
+      return prevState.map((item: iPost): iPost => {
+        if (item.id === newData.id) {
+          return {...item, ...newData};
         }
         return item;
       });
-      return updatedData;
+    });
+  };
+
+  const postCreateHandler = (newData: iPost): void => {
+    setData((prevState: Array<iPost>): any => {
+      return [newData, ...prevState];
     });
   };
 
@@ -87,11 +91,6 @@ const Posts = () => {
         //       width: '100%',
         //       backgroundColor: '#f9e09e',
         //     }}>
-        //     <Icon icon="comment" />
-        //     <Icon icon="xmark" />
-        //     <Icon icon="pen" />
-        //     <Icon icon="ban" />
-        //     <Icon icon="floppy-disk" />
         //     <Icon icon="paper-plane" />
         //     <Icon icon="left-long" />
         //     <Icon icon="arrow-left-long" />
@@ -112,6 +111,7 @@ const Posts = () => {
       <CreatePost
         visible={createPostVisible}
         visibilityHandler={visibilitySwitchHandler}
+        postCreateHandler={postCreateHandler}
       />
     </PostsWrapper>
   );

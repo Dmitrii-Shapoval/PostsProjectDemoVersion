@@ -46,6 +46,7 @@ export const InputTitle = styled.TextInput`
 `;
 export const InputDescription = styled.TextInput`
   color: #1b1c1f;
+  text-align-vertical: top;
   padding: 10px;
   max-height: 150px;
 `;
