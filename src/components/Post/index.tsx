@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   PostWrapper,
   MessageCountContainer,
@@ -19,7 +19,7 @@ interface iProps {
   title: string;
   description: string;
   postEditClickHandler: any;
-  updatePostHandler: any;
+  postUpdateHandler: any;
   postDeletionHandler: any;
   editMode: boolean;
   postId: number;
@@ -29,12 +29,15 @@ export default ({
   title,
   description,
   postEditClickHandler,
-  updatePostHandler,
+  postUpdateHandler,
   postDeletionHandler,
   editMode,
 }: iProps) => {
   const [titleText, setTitleText] = React.useState(title);
   const [descriptionText, setDescriptionText] = React.useState(description);
+  const [contentSize, setContentSize] = useState(100);
+  const [titleHeight, setTitleHeight] = useState(100);
+  const [descriptionHeight, setDescriptionHeight] = useState(500);
 
   const messageCount: number = 7;
   const cancelEventHandler = () => {
@@ -44,7 +47,22 @@ export default ({
   };
   const postSavedHandler = () => {
     postEditClickHandler(0);
-    updatePostHandler(postId, {title: titleText, body: descriptionText});
+    postUpdateHandler(postId, {title: titleText, body: descriptionText});
+  };
+
+  const contentHeightHandler = (e: any) => {
+    const {height} = e.nativeEvent.layout;
+    setContentSize(height);
+  };
+
+  const titleHeightHandler = (e: any) => {
+    const {height} = e.nativeEvent.layout;
+    setTitleHeight(height);
+  };
+
+  const descriptionHeightHandler = (e: any) => {
+    const {height} = e.nativeEvent.layout;
+    setDescriptionHeight(height);
   };
 
   return (
@@ -64,19 +82,21 @@ export default ({
         )}
       </LeftButtonContainer>
       {editMode ? (
-        <ContentContainer>
+        <ContentContainer height={contentSize}>
           <InputTitle
             multiline
+            height={titleHeight}
             onChangeText={text => setTitleText(text)}
             value={titleText}
-            placeholder="Введите заголовок поста"
+            placeholder="Введите заголовок"
             maxLength={100}
             placeholderTextColor="#847878"
             cursorColor="#757072"
           />
           <InputDescription
-            // autoFocus
+            autoFocus
             multiline
+            height={descriptionHeight}
             onChangeText={text => setDescriptionText(text)}
             value={descriptionText}
             placeholder="Введите описание поста"
@@ -86,9 +106,11 @@ export default ({
           />
         </ContentContainer>
       ) : (
-        <ContentContainer>
-          <TitleWrapper>{title}</TitleWrapper>
-          <DescriptionWrapper>{description}</DescriptionWrapper>
+        <ContentContainer onLayout={contentHeightHandler}>
+          <TitleWrapper onLayout={titleHeightHandler}>{title}</TitleWrapper>
+          <DescriptionWrapper onLayout={descriptionHeightHandler}>
+            {description}
+          </DescriptionWrapper>
         </ContentContainer>
       )}
       <RigthButtonsContainer>

@@ -41,9 +41,11 @@ export const InputContainer = styled.View`
   background-color: #f7f2f6;
 `;
 export const InputTitle = styled.TextInput`
+  color: #1b1c1f;
   padding: 10px;
 `;
 export const InputDescription = styled.TextInput`
+  color: #1b1c1f;
   padding: 10px;
   max-height: 150px;
 `;

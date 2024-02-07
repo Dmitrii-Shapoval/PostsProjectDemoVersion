@@ -47,7 +47,7 @@ const Posts = () => {
     });
   };
 
-  const updatePostHandler = (postId: number, newData: object): void => {
+  const postUpdateHandler = (postId: number, newData: object): void => {
     setData((prevState: Array<object>): any => {
       const updatedData: any[] = prevState.map((item: any) => {
         if (item.id === postId) {
@@ -71,7 +71,7 @@ const Posts = () => {
             description={item.body}
             editMode={item.id === postEditClick}
             postEditClickHandler={postEditClickHandler}
-            updatePostHandler={updatePostHandler}
+            postUpdateHandler={postUpdateHandler}
             postDeletionHandler={postDeletionHandler}
           />
         )}
