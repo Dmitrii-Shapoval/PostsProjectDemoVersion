@@ -9,19 +9,30 @@ export const HeaderWrapper = styled.View`
   height: 80px;
   background-color: #f9e09e;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
 `;
 
+export const TitleContainer = styled.View`
+  justify-content: center;
+`;
 export const TextWrapper = styled.Text`
   color: #201b18;
   font-size: 30px;
-  text-align: center;
-  padding-left: 20px;
 `;
 
 export const Icon = styled(FontAwesomeIcon)`
   color: #201b18;
+`;
+
+export const LeftContainer = styled.TouchableOpacity`
+  width: 20%;
+  align-items: center;
+  justify-content: center;
+`;
+export const RightContainer = styled.View`
+  width: 20%;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const styles = StyleSheet.create({

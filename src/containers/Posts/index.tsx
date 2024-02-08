@@ -1,5 +1,5 @@
+import {Keyboard} from 'react-native';
 import Post from '../../components/Post';
-import {View, Keyboard} from 'react-native';
 import Header from '../../components/Header';
 import React, {useEffect, useState} from 'react';
 import CreatePost from '../../components/CreatePost';
@@ -65,7 +65,7 @@ const Posts = () => {
 
   return (
     <PostsWrapper>
-      <Header title="Posts App Demo" />
+      <Header title="Posts App Demo" backButton={false} />
       <PostsList
         data={data}
         renderItem={({item}: any) => (
@@ -81,22 +81,6 @@ const Posts = () => {
         )}
         keyExtractor={(item: any) => item.id}
         ListFooterComponent={LastItem}
-        // ListHeaderComponent={
-        //   <View
-        //     style={{
-        //       flexDirection: 'row',
-        //       justifyContent: 'center',
-        //       alignItems: 'center',
-        //       height: 50,
-        //       width: '100%',
-        //       backgroundColor: '#f9e09e',
-        //     }}>
-        //     <Icon icon="left-long" />
-        //     <Icon icon="arrow-left-long" />
-        //     <Icon icon="angle-left" />
-        //     <Icon icon="envelopes-bulk" />
-        //   </View>
-        // }
       />
       {isKeyboardVisible || (
         <Footer>

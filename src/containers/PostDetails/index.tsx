@@ -63,7 +63,7 @@ const PostsDetails = () => {
 
   return (
     <PostsWrapper>
-      <Header title="Posts App Demo" />
+      <Header title="Comments" backButton />
       <PostsList
         data={data}
         renderItem={({item}: any) => (
