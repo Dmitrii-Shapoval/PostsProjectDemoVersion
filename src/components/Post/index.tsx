@@ -1,53 +1,53 @@
 import React, {useState} from 'react';
 import {
-  PostWrapper,
-  MessageCountContainer,
   Icon,
-  MessageCount,
-  ContentContainer,
+  InputTitle,
+  EditButton,
+  PostWrapper,
+  CloseButton,
   TitleWrapper,
+  CommentCount,
+  InputDescription,
+  ContentContainer,
   DescriptionWrapper,
   LeftButtonContainer,
   RigthButtonsContainer,
-  CloseButton,
-  InputDescription,
-  InputTitle,
-  EditButton,
+  CommentCountContainer,
 } from './styles.ts';
 
 interface iProps {
   title: string;
+  postId: number;
+  editMode: boolean;
   description: string;
-  postEditClickHandler: any;
   postUpdateHandler: any;
   postDeletionHandler: any;
-  editMode: boolean;
-  postId: number;
+  commentEditClickHandler: any;
 }
 export default ({
-  postId,
   title,
+  postId,
+  editMode,
   description,
-  postEditClickHandler,
   postUpdateHandler,
   postDeletionHandler,
-  editMode,
+  commentEditClickHandler,
 }: iProps) => {
   const [titleText, setTitleText] = React.useState<string>(title);
-  const [descriptionText, setDescriptionText] =
-    React.useState<string>(description);
   const [contentSize, setContentSize] = useState<number>(100);
   const [titleHeight, setTitleHeight] = useState<number>(100);
   const [descriptionHeight, setDescriptionHeight] = useState<number>(500);
+  const [descriptionText, setDescriptionText] =
+    React.useState<string>(description);
 
-  const messageCount: number = 7;
+  const commentCount: number = 7;
   const cancelEventHandler = (): void => {
-    postEditClickHandler(0);
     setTitleText(title);
     setDescriptionText(description);
+    commentEditClickHandler(0);
   };
   const postSavedHandler = (): void => {
-    postEditClickHandler(0);
+    commentEditClickHandler(0);
     postUpdateHandler({id: postId, title: titleText, body: descriptionText});
   };
 
@@ -70,16 +70,16 @@ export default ({
     <PostWrapper>
       <LeftButtonContainer>
         {editMode ? (
-          <MessageCountContainer onPress={cancelEventHandler}>
+          <CommentCountContainer onPress={cancelEventHandler}>
             <Icon icon="ban" size={17} />
-          </MessageCountContainer>
+          </CommentCountContainer>
         ) : (
-          <MessageCountContainer>
+          <CommentCountContainer>
             <Icon icon="message" size={22} color={'#a13f28'} />
-            <MessageCount>
-              {messageCount < 9 ? messageCount : '9+'}
-            </MessageCount>
-          </MessageCountContainer>
+            <CommentCount>
+              {commentCount < 9 ? commentCount : '9+'}
+            </CommentCount>
+          </CommentCountContainer>
         )}
       </LeftButtonContainer>
       {editMode ? (
@@ -123,7 +123,7 @@ export default ({
             <Icon icon="floppy-disk" size={17} />
           </EditButton>
         ) : (
-          <EditButton onPress={postEditClickHandler.bind(this, postId)}>
+          <EditButton onPress={commentEditClickHandler.bind(this, postId)}>
             <Icon icon="pen" size={17} />
           </EditButton>
         )}

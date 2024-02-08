@@ -1,15 +1,15 @@
 import React from 'react';
 import {Modal} from 'react-native';
 import {
-  CreatePostWrapper,
-  CreatePostContainer,
-  TitleContainer,
   Icon,
   Title,
-  InputContainer,
   InputTitle,
-  InputDescription,
   IconContainer,
+  InputContainer,
+  TitleContainer,
+  InputDescription,
+  CreatePostWrapper,
+  CreatePostContainer,
 } from './styles.ts';
 import RectangularButton from '../RectangularButton';
 

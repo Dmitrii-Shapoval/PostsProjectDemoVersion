@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {View, Keyboard} from 'react-native';
-import {Footer, LastItem, PostsList, PostsWrapper, Icon} from './styles.ts';
-import Header from '../../components/Header';
-import RoundButton from '../../components/RoundВutton';
-import CreatePost from '../../components/CreatePost';
 import Post from '../../components/Post';
-import {DATA, iPost} from '../../assets/data/data.ts';
+import {View, Keyboard} from 'react-native';
+import Header from '../../components/Header';
+import React, {useEffect, useState} from 'react';
+import CreatePost from '../../components/CreatePost';
+import {DATA, iPost} from '../../assets/data/DATA.ts';
+import RoundButton from '../../components/RoundВutton';
+import {Footer, LastItem, PostsList, PostsWrapper, Icon} from './styles.ts';
 
 const Posts = () => {
   const [data, setData] = useState<Array<iPost>>(DATA);
+  const [postEditClick, setPostEditClick] = useState<number>(0);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState<boolean>(false);
   const [createPostVisible, setCreatePostVisible] = useState<boolean>(false);
-  const [postEditClick, setPostEditClick] = useState<number>(0);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -74,7 +74,7 @@ const Posts = () => {
             title={item.title}
             description={item.body}
             editMode={item.id === postEditClick}
-            postEditClickHandler={postEditClickHandler}
+            commentEditClickHandler={postEditClickHandler}
             postUpdateHandler={postUpdateHandler}
             postDeletionHandler={postDeletionHandler}
           />
@@ -91,7 +91,6 @@ const Posts = () => {
         //       width: '100%',
         //       backgroundColor: '#f9e09e',
         //     }}>
-        //     <Icon icon="paper-plane" />
         //     <Icon icon="left-long" />
         //     <Icon icon="arrow-left-long" />
         //     <Icon icon="angle-left" />

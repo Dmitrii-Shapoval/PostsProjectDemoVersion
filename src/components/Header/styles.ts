@@ -1,7 +1,7 @@
+import {StyleSheet} from 'react-native';
+import {Shadow} from 'react-native-shadow-2';
 import styled from 'styled-components/native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {Shadow} from 'react-native-shadow-2';
-import {StyleSheet} from 'react-native';
 
 export const ShadowWrapper = styled(Shadow)``;
 

@@ -1,23 +1,23 @@
 import React from 'react';
 import {
-  PostContainer,
-  PostTitle,
-  PostDescription,
+  Icon,
   InfoBlock,
   ListTitle,
+  PostTitle,
+  PostContainer,
   ElementsNumber,
-  Icon,
   MessageCounter,
+  PostDescription,
 } from './styles.ts';
 
 interface iProps {
   title: string;
-  description: string;
   listTitle: string;
-  messagesNumber: number;
+  description: string;
+  commentNumber: number | string;
 }
 
-export default ({title, description, listTitle, messagesNumber}: iProps) => (
+export default ({title, description, listTitle, commentNumber}: iProps) => (
   <PostContainer>
     <PostTitle>{title}</PostTitle>
     <PostDescription>{description}</PostDescription>
@@ -25,7 +25,7 @@ export default ({title, description, listTitle, messagesNumber}: iProps) => (
       <ListTitle>{listTitle}</ListTitle>
       <ElementsNumber>
         <Icon icon="message" size={30} />
-        <MessageCounter>{messagesNumber}</MessageCounter>
+        <MessageCounter>{commentNumber}</MessageCounter>
       </ElementsNumber>
     </InfoBlock>
   </PostContainer>

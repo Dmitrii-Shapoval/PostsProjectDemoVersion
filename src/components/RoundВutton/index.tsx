@@ -4,8 +4,8 @@ import React from 'react';
 interface iProps {
   text?: string;
   onPress: any;
-  disableShadow?: boolean;
   children?: any;
+  disableShadow?: boolean;
 }
 
 export default ({text, onPress, disableShadow, children}: iProps) => (

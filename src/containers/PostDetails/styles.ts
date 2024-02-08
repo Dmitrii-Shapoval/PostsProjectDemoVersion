@@ -1,7 +1,5 @@
 import styled from 'styled-components/native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {Shadow} from 'react-native-shadow-2';
-import {StyleSheet} from 'react-native';
 
 export const PostsWrapper = styled.View`
   height: 100%;
@@ -12,7 +10,6 @@ export const PostsWrapper = styled.View`
 `;
 
 export const PostsList = styled.FlatList`
-  //background-color: chartreuse;
   height: 100%;
   width: 90%;
   z-index: -999;
@@ -26,6 +23,5 @@ export const LastItem = styled.View`
 
 export const Icon = styled(FontAwesomeIcon)`
   color: #201b18;
-  //background-color: red;
   padding-left: 30px;
 `;

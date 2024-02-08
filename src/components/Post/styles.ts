@@ -14,14 +14,14 @@ export const Icon = styled(FontAwesomeIcon)`
   color: #241a00;
 `;
 
-export const MessageCountContainer = styled.TouchableOpacity`
+export const CommentCountContainer = styled.TouchableOpacity`
   width: 100%;
   height: 35px;
   align-items: center;
   justify-content: flex-end;
 `;
 
-export const MessageCount = styled.Text`
+export const CommentCount = styled.Text`
   color: #ffe9e2;
   font-weight: bold;
   font-size: 14px;

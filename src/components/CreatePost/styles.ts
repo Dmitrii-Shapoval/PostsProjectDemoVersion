@@ -4,7 +4,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 export const CreatePostWrapper = styled.View`
   height: 100%;
   background-color: rgba(36, 26, 0, 0.8);
-  //background-color: rgba(133, 115, 111, 0.7);
   align-items: center;
   justify-content: center;
 `;

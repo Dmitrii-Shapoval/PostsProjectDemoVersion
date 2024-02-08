@@ -1,10 +1,11 @@
 import {
-  HeaderWrapper,
-  TextWrapper,
   Icon,
-  ShadowWrapper,
   styles,
+  TextWrapper,
+  ShadowWrapper,
+  HeaderWrapper,
 } from './styles.ts';
+import React from 'react';
 interface iProps {
   title: string;
 }
