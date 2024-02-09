@@ -68,14 +68,14 @@ const PostsDetails = () => {
         data={data}
         renderItem={({item}: any) => (
           <Comment
-            commentId={item.id}
             postId={item.postId}
-            description={item.text}
             editMode={item.id === postEditClick}
+            commentId={item.id}
+            description={item.text}
             commentFocusHandler={commentFocusHandler}
-            commentEditClickHandler={commentEditClickHandler}
             commentUpdateHandler={commentUpdateHandler}
             commentDeletionHandler={commentDeletionHandler}
+            commentEditClickHandler={commentEditClickHandler}
           />
         )}
         keyExtractor={(item: any) => item.id}
@@ -83,8 +83,8 @@ const PostsDetails = () => {
         ListHeaderComponent={
           <OpenedPost
             title="Ryan Howard"
-            description="Lorem Ipsum is simply dummy text of the printing and typedummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
             listTitle="Coments"
+            description="Lorem Ipsum is simply dummy text of the printing and typedummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
             commentNumber={data.length < 9 ? data.length : '9+'}
           />
         }

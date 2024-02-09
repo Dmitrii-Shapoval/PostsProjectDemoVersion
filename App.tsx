@@ -13,10 +13,7 @@ function App(): React.JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen
-          name="Posts"
-          component={Posts}
-        />
+        <Stack.Screen name="Posts" component={Posts} />
         <Stack.Screen name="PostDetails" component={PostDetails} />
       </Stack.Navigator>
     </NavigationContainer>

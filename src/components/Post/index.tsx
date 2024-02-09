@@ -21,6 +21,7 @@ interface iProps {
   editMode: boolean;
   description: string;
   postClickHandler: any;
+  postFocusHandler: any;
   postUpdateHandler: any;
   postDeletionHandler: any;
   commentEditClickHandler: any;
@@ -31,6 +32,7 @@ export default ({
   editMode,
   description,
   postClickHandler,
+  postFocusHandler,
   postUpdateHandler,
   postDeletionHandler,
   commentEditClickHandler,
@@ -88,24 +90,26 @@ export default ({
         <ContentContainer height={contentSize}>
           <InputTitle
             multiline
-            height={titleHeight}
-            onChangeText={(text: string) => setTitleText(text)}
-            value={titleText}
-            placeholder="Введите заголовок"
             maxLength={100}
-            placeholderTextColor="#847878"
+            value={titleText}
+            height={titleHeight}
             cursorColor="#757072"
+            onFocus={postFocusHandler}
+            placeholderTextColor="#847878"
+            placeholder="Введите заголовок"
+            onChangeText={(text: string) => setTitleText(text)}
           />
           <InputDescription
             autoFocus
             multiline
-            height={descriptionHeight}
-            onChangeText={(text: string) => setDescriptionText(text)}
-            value={descriptionText}
-            placeholder="Введите описание поста"
             maxLength={800}
-            placeholderTextColor="#847878"
             cursorColor="#757072"
+            value={descriptionText}
+            height={descriptionHeight}
+            onFocus={postFocusHandler}
+            placeholder="Введите описание поста"
+            onChangeText={(text: string) => setDescriptionText(text)}
+            placeholderTextColor="#847878"
           />
         </ContentContainer>
       ) : (

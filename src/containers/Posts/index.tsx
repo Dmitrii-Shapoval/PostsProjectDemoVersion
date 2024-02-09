@@ -1,4 +1,4 @@
-import {Keyboard} from 'react-native';
+import {Animated, Keyboard} from 'react-native';
 import Post from '../../components/Post';
 import Header from '../../components/Header';
 import React, {useEffect, useState} from 'react';
@@ -7,35 +7,30 @@ import {DATA, iPost} from '../../assets/data/DATA.ts';
 import RoundButton from '../../components/RoundВutton';
 import {Footer, LastItem, PostsList, PostsWrapper, Icon} from './styles.ts';
 import {useNavigation} from '@react-navigation/native';
-
 const Posts = () => {
-  const [data, setData] = useState<Array<iPost>>(DATA);
   const navigation = useNavigation();
+  const slideAnimation = useState(new Animated.Value(0))[0];
+  const [data, setData] = useState<Array<iPost>>(DATA);
   const [postEditClick, setPostEditClick] = useState<number>(0);
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState<boolean>(false);
   const [createPostVisible, setCreatePostVisible] = useState<boolean>(false);
 
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      (): void => {
-        setIsKeyboardVisible(true);
-      },
-    );
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
-        setIsKeyboardVisible(false);
+        Animated.timing(slideAnimation, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }).start();
       },
     );
-
     return (): void => {
-      keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
-  }, []);
+  }, [slideAnimation]);
 
-  const postClickHandler = () => {
+  const postClickHandler = (): void => {
     navigation.navigate('PostDetails');
   };
 
@@ -70,6 +65,14 @@ const Posts = () => {
     });
   };
 
+  const postFocusHandler = (): void => {
+    Animated.timing(slideAnimation, {
+      toValue: 200,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  };
+
   return (
     <PostsWrapper>
       <Header title="Posts App Demo" backButton={false} />
@@ -77,20 +80,25 @@ const Posts = () => {
         data={data}
         renderItem={({item}: any) => (
           <Post
-            postId={item.id}
             title={item.title}
-            description={item.body}
+            postId={item.id}
             editMode={item.id === postEditClick}
-            commentEditClickHandler={postEditClickHandler}
+            description={item.body}
+            postFocusHandler={postFocusHandler}
+            postClickHandler={postClickHandler}
             postUpdateHandler={postUpdateHandler}
             postDeletionHandler={postDeletionHandler}
-            postClickHandler={postClickHandler}
+            commentEditClickHandler={postEditClickHandler}
           />
         )}
         keyExtractor={(item: any) => item.id}
         ListFooterComponent={LastItem}
       />
-      {isKeyboardVisible || (
+      {/*{isKeyboardVisible || (*/}
+      <Animated.View
+        style={{
+          transform: [{translateY: slideAnimation}],
+        }}>
         <Footer>
           <RoundButton
             onPress={visibilitySwitchHandler}
@@ -98,7 +106,8 @@ const Posts = () => {
             <Icon icon="plus" size={22} />
           </RoundButton>
         </Footer>
-      )}
+      </Animated.View>
+      {/*)}*/}
       <CreatePost
         visible={createPostVisible}
         visibilityHandler={visibilitySwitchHandler}
