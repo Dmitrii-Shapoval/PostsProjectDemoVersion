@@ -2,6 +2,7 @@ import {
   Icon,
   styles,
   TextWrapper,
+  ArrowButton,
   HeaderWrapper,
   ShadowWrapper,
   LeftContainer,
@@ -9,11 +10,14 @@ import {
   TitleContainer,
 } from './styles.ts';
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
 interface iProps {
   title: string;
   backButton?: boolean;
 }
 const Header = ({title, backButton}: iProps) => {
+  const navigation = useNavigation();
+  const getBack = () => navigation.goBack();
   const {shadowContainerStyles, shadowStyles}: any = styles;
   return (
     <ShadowWrapper
@@ -24,7 +28,9 @@ const Header = ({title, backButton}: iProps) => {
       <HeaderWrapper>
         <LeftContainer>
           {backButton ? (
-            <Icon icon="angle-left" size={35} />
+            <ArrowButton onPress={getBack}>
+              <Icon icon="angle-left" size={35} />
+            </ArrowButton>
           ) : (
             <Icon icon="envelopes-bulk" size={45} />
           )}

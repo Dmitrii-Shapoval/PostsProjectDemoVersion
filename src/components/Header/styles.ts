@@ -24,8 +24,15 @@ export const Icon = styled(FontAwesomeIcon)`
   color: #201b18;
 `;
 
-export const LeftContainer = styled.TouchableOpacity`
+export const LeftContainer = styled.View`
   width: 20%;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ArrowButton = styled.TouchableOpacity`
+  width: 100%;
+  height: 100%;
   align-items: center;
   justify-content: center;
 `;

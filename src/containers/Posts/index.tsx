@@ -6,9 +6,11 @@ import CreatePost from '../../components/CreatePost';
 import {DATA, iPost} from '../../assets/data/DATA.ts';
 import RoundButton from '../../components/RoundВutton';
 import {Footer, LastItem, PostsList, PostsWrapper, Icon} from './styles.ts';
+import {useNavigation} from '@react-navigation/native';
 
 const Posts = () => {
   const [data, setData] = useState<Array<iPost>>(DATA);
+  const navigation = useNavigation();
   const [postEditClick, setPostEditClick] = useState<number>(0);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState<boolean>(false);
   const [createPostVisible, setCreatePostVisible] = useState<boolean>(false);
@@ -32,6 +34,11 @@ const Posts = () => {
       keyboardDidHideListener.remove();
     };
   }, []);
+
+  const postClickHandler = () => {
+    navigation.navigate('PostDetails');
+  };
+
   const visibilitySwitchHandler = () =>
     setCreatePostVisible((prevState: boolean) => !prevState);
 
@@ -77,6 +84,7 @@ const Posts = () => {
             commentEditClickHandler={postEditClickHandler}
             postUpdateHandler={postUpdateHandler}
             postDeletionHandler={postDeletionHandler}
+            postClickHandler={postClickHandler}
           />
         )}
         keyExtractor={(item: any) => item.id}

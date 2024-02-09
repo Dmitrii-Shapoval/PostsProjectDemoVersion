@@ -20,6 +20,7 @@ interface iProps {
   postId: number;
   editMode: boolean;
   description: string;
+  postClickHandler: any;
   postUpdateHandler: any;
   postDeletionHandler: any;
   commentEditClickHandler: any;
@@ -29,6 +30,7 @@ export default ({
   postId,
   editMode,
   description,
+  postClickHandler,
   postUpdateHandler,
   postDeletionHandler,
   commentEditClickHandler,
@@ -107,7 +109,9 @@ export default ({
           />
         </ContentContainer>
       ) : (
-        <ContentContainer onLayout={contentHeightHandler}>
+        <ContentContainer
+          onLayout={contentHeightHandler}
+          onPress={postClickHandler}>
           <TitleWrapper onLayout={titleHeightHandler}>{title}</TitleWrapper>
           <DescriptionWrapper onLayout={descriptionHeightHandler}>
             {description}

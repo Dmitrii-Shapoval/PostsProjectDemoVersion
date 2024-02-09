@@ -86,7 +86,7 @@ export default ({
           />
         </ContentContainer>
       ) : (
-        <ContentContainer onLayout={contentHeightHandler}>
+        <ContentContainer onLayout={contentHeightHandler} disabled>
           <DescriptionWrapper onLayout={descriptionHeightHandler}>
             {description}
           </DescriptionWrapper>
