@@ -5,10 +5,9 @@ import React, {useEffect, useState} from 'react';
 import CreatePost from '../../components/CreatePost';
 import {DATA, iPost} from '../../assets/data/DATA.ts';
 import RoundButton from '../../components/RoundВutton';
+import {NavigationProp} from '@react-navigation/native';
 import {Footer, LastItem, PostsList, PostsWrapper, Icon} from './styles.ts';
-import {useNavigation} from '@react-navigation/native';
-const Posts = () => {
-  const navigation = useNavigation();
+const Posts = ({navigation}: {navigation: NavigationProp<any>}) => {
   const slideAnimation = useState(new Animated.Value(0))[0];
   const [data, setData] = useState<Array<iPost>>(DATA);
   const [postEditClick, setPostEditClick] = useState<number>(0);
@@ -30,8 +29,8 @@ const Posts = () => {
     };
   }, [slideAnimation]);
 
-  const postClickHandler = (): void => {
-    navigation.navigate('PostDetails');
+  const postClickHandler = (item: iPost): void => {
+    navigation.navigate('PostDetails', item);
   };
 
   const visibilitySwitchHandler = () =>
@@ -85,7 +84,7 @@ const Posts = () => {
             editMode={item.id === postEditClick}
             description={item.body}
             postFocusHandler={postFocusHandler}
-            postClickHandler={postClickHandler}
+            postClickHandler={postClickHandler.bind(this, item)}
             postUpdateHandler={postUpdateHandler}
             postDeletionHandler={postDeletionHandler}
             commentEditClickHandler={postEditClickHandler}

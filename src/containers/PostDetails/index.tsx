@@ -7,7 +7,8 @@ import CreateComment from '../../components/CreateComment';
 import {LastItem, PostsList, PostsWrapper} from './styles.ts';
 import {DATA_COMMENT, iComment} from '../../assets/data/DATA.ts';
 
-const PostsDetails = () => {
+const PostsDetails = ({route}: any) => {
+  const {title, body} = route.params;
   const slideAnimation = useState(new Animated.Value(0))[0];
   const [data, setData] = useState<Array<iComment>>(DATA_COMMENT);
   const [postEditClick, setPostEditClick] = useState<number>(0);
@@ -82,9 +83,9 @@ const PostsDetails = () => {
         ListFooterComponent={LastItem}
         ListHeaderComponent={
           <OpenedPost
-            title="Ryan Howard"
+            title={title}
             listTitle="Coments"
-            description="Lorem Ipsum is simply dummy text of the printing and typedummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+            description={body}
             commentNumber={data.length < 9 ? data.length : '9+'}
           />
         }
