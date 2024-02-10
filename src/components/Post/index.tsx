@@ -20,6 +20,7 @@ interface iProps {
   postId: number;
   editMode: boolean;
   description: string;
+  commentCount?: number;
   postClickHandler: any;
   postFocusHandler: any;
   postUpdateHandler: any;
@@ -31,6 +32,7 @@ export default ({
   postId,
   editMode,
   description,
+  commentCount,
   postClickHandler,
   postFocusHandler,
   postUpdateHandler,
@@ -43,8 +45,6 @@ export default ({
   const [descriptionHeight, setDescriptionHeight] = useState<number>(500);
   const [descriptionText, setDescriptionText] =
     React.useState<string>(description);
-
-  const commentCount: number = 7;
   const cancelEventHandler = (): void => {
     setTitleText(title);
     setDescriptionText(description);
@@ -78,10 +78,10 @@ export default ({
             <Icon icon="ban" size={17} />
           </CommentCountContainer>
         ) : (
-          <CommentCountContainer>
-            <Icon icon="message" size={22} color={'#a13f28'} />
+          <CommentCountContainer onPress={postClickHandler}>
+            <Icon icon="file-lines" size={22} color={'#a13f28'} />
             <CommentCount>
-              {commentCount < 9 ? commentCount : '9+'}
+              {commentCount ? (commentCount < 9 ? commentCount : '9+') : ''}
             </CommentCount>
           </CommentCountContainer>
         )}

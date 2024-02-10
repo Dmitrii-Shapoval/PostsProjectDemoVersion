@@ -1,22 +1,31 @@
 import Header from '../../components/Header';
 import Comment from '../../components/Comment';
 import {Keyboard, Animated} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import OpenedPost from '../../components/OpenedPost';
 import CreateComment from '../../components/CreateComment';
-import {LastItem, PostsList, PostsWrapper} from './styles.ts';
+import {LastItem, CommentsList, CommentsWrapper} from './styles.ts';
 import {DATA_COMMENT, iComment} from '../../assets/data/DATA.ts';
 
 const PostsDetails = ({route}: any) => {
-  const {title, body} = route.params;
-  const slideAnimation = useState(new Animated.Value(0))[0];
-  const [data, setData] = useState<Array<iComment>>(DATA_COMMENT);
+  const {id, title, body} = route.params;
+  const slideAnimation: Animated.Value = useRef(new Animated.Value(0)).current;
+  const selectCommentsById = (data: Array<iComment>, postId: number) => {
+    return data.filter((item: iComment): boolean => item.postId === postId);
+  };
+  const selectedComments: Array<iComment> = selectCommentsById(
+    DATA_COMMENT,
+    id,
+  );
+  const [data, setData] = useState<Array<iComment>>(selectedComments);
   const [postEditClick, setPostEditClick] = useState<number>(0);
+
+  console.log('selectedComments', selectedComments.length, id);
 
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
-      () => {
+      (): void => {
         Animated.timing(slideAnimation, {
           toValue: 0,
           duration: 500,
@@ -63,9 +72,9 @@ const PostsDetails = ({route}: any) => {
   };
 
   return (
-    <PostsWrapper>
+    <CommentsWrapper>
       <Header title="Comments" backButton />
-      <PostsList
+      <CommentsList
         data={data}
         renderItem={({item}: any) => (
           <Comment
@@ -97,7 +106,7 @@ const PostsDetails = ({route}: any) => {
         }}>
         <CreateComment commentCreateHandler={commentCreateHandler} />
       </Animated.View>
-    </PostsWrapper>
+    </CommentsWrapper>
   );
 };
 

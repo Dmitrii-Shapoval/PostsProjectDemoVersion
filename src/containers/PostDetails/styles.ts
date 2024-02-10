@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
-export const PostsWrapper = styled.View`
+export const CommentsWrapper = styled.View`
   height: 100%;
   background-color: #fffbff;
   justify-content: space-between;
@@ -9,7 +9,7 @@ export const PostsWrapper = styled.View`
   z-index: 999;
 `;
 
-export const PostsList = styled.FlatList`
+export const CommentsList = styled.FlatList`
   height: 100%;
   width: 90%;
   z-index: -999;

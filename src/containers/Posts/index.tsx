@@ -1,14 +1,14 @@
 import {Animated, Keyboard} from 'react-native';
 import Post from '../../components/Post';
 import Header from '../../components/Header';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import CreatePost from '../../components/CreatePost';
 import {DATA, iPost} from '../../assets/data/DATA.ts';
 import RoundButton from '../../components/RoundВutton';
 import {NavigationProp} from '@react-navigation/native';
 import {Footer, LastItem, PostsList, PostsWrapper, Icon} from './styles.ts';
 const Posts = ({navigation}: {navigation: NavigationProp<any>}) => {
-  const slideAnimation = useState(new Animated.Value(0))[0];
+  const slideAnimation = useRef(new Animated.Value(0)).current;
   const [data, setData] = useState<Array<iPost>>(DATA);
   const [postEditClick, setPostEditClick] = useState<number>(0);
   const [createPostVisible, setCreatePostVisible] = useState<boolean>(false);
