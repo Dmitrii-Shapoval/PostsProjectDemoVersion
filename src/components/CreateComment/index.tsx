@@ -9,16 +9,17 @@ import {
   CommentCreationContainer,
 } from './styles.ts';
 interface iProps {
+  postId: number;
   commentCreateHandler: any;
 }
 
-export default ({commentCreateHandler}: iProps) => {
+export default ({commentCreateHandler, postId}: iProps) => {
   const {shadowStyles, shadowContainerStyles} = styles;
   const [descriptionText, setDescriptionText] = React.useState<string>('');
   const saveChangeHandler = (): void => {
     commentCreateHandler({
       id: Date.now(),
-      postId: Date.now() / 2,
+      postId,
       text: descriptionText,
     });
     setDescriptionText('');
