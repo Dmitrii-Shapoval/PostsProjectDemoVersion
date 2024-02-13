@@ -1,6 +1,8 @@
 import axios from 'axios';
 import * as React from 'react';
-import { BASE_URL } from "./links";
+import {BASE_URL} from './links';
+import {Provider} from 'react-redux';
+import store from './src/redux/store';
 import Posts from './src/containers/Posts';
 import {fas} from '@fortawesome/free-solid-svg-icons';
 import PostDetails from './src/containers/PostDetails';
@@ -34,20 +36,22 @@ const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen
-          name="Posts"
-          component={Posts}
-          initialParams={{fetchPosts}}
-        />
-        <Stack.Screen
-          name="PostDetails"
-          component={PostDetails}
-          initialParams={{fetchComments}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+          <Stack.Screen
+            name="Posts"
+            component={Posts}
+            initialParams={{fetchPosts}}
+          />
+          <Stack.Screen
+            name="PostDetails"
+            component={PostDetails}
+            initialParams={{fetchComments}}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 export default App;
