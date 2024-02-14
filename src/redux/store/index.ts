@@ -13,6 +13,8 @@ const initialState: Partial<AppState> = {
   posts: {posts: [], loading: false, error: null},
 };
 
+export type RootState = ReturnType<typeof rootReducer>;
+
 const store = createStore(
   rootReducer,
   initialState as any,

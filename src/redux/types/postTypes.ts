@@ -1,20 +1,20 @@
 import { ADD_POST, DELETE_POST, UPDATE_POST, FETCH_POSTS_REQUEST, FETCH_POSTS_SUCCESS, FETCH_POSTS_FAILURE } from './actionTypes';
 
-export interface Post {
+export interface IPost {
   id: number;
   title: string;
   body: string;
 }
 
 export interface PostState {
-  posts: Post[];
+  posts: IPost[];
   loading: boolean;
   error: string | null;
 }
 
 interface AddPostAction {
   type: typeof ADD_POST;
-  payload: Post;
+  payload: IPost;
 }
 
 interface DeletePostAction {
@@ -24,7 +24,7 @@ interface DeletePostAction {
 
 interface UpdatePostAction {
   type: typeof UPDATE_POST;
-  payload: Post;
+  payload: IPost;
 }
 
 interface FetchPostsRequestAction {
@@ -33,7 +33,7 @@ interface FetchPostsRequestAction {
 
 interface FetchPostsSuccessAction {
   type: typeof FETCH_POSTS_SUCCESS;
-  payload: Post[];
+  payload: IPost[];
 }
 
 interface FetchPostsFailureAction {

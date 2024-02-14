@@ -1,6 +1,17 @@
 import axios from 'axios';
-import { Dispatch } from 'redux';
-import { CommentActionTypes, ADD_COMMENT, DELETE_COMMENT, UPDATE_COMMENT, FETCH_COMMENTS_REQUEST, FETCH_COMMENTS_SUCCESS, FETCH_COMMENTS_FAILURE } from '../types';
+import {Dispatch} from 'redux';
+import {
+  CommentActionTypes,
+  ADD_COMMENT,
+  DELETE_COMMENT,
+  UPDATE_COMMENT,
+  FETCH_COMMENTS_REQUEST,
+  FETCH_COMMENTS_SUCCESS,
+  FETCH_COMMENTS_FAILURE,
+} from '../types';
+import {BASE_URL} from '../../../links';
+import {RootState} from '../store';
+import {ThunkAction} from 'redux-thunk';
 
 export const addComment = (comment: any) => {
   return async (dispatch: Dispatch<CommentActionTypes>) => {
@@ -46,16 +57,21 @@ export const updateComment = (comment: any) => {
   };
 };
 
-export const fetchComments = () => {
-  return async (dispatch: Dispatch<CommentActionTypes>) => {
-    dispatch({ type: FETCH_COMMENTS_REQUEST });
+export const fetchComments = (): ThunkAction<
+  Promise<void>,
+  RootState,
+  unknown,
+  CommentActionTypes
+> => {
+  return async (dispatch: Dispatch<CommentActionTypes>): Promise<void> => {
+    dispatch({type: FETCH_COMMENTS_REQUEST});
     try {
-      const response = await axios.get('/comments');
+      const response = await axios.get(`${BASE_URL}/comments`);
       dispatch({
         type: FETCH_COMMENTS_SUCCESS,
         payload: response.data,
       });
-    } catch (error) {
+    } catch (error: any) {
       dispatch({
         type: FETCH_COMMENTS_FAILURE,
         payload: error.message,

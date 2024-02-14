@@ -1,10 +1,21 @@
 import axios from 'axios';
-import { Dispatch } from 'redux';
-import { PostActionTypes, ADD_POST, DELETE_POST, UPDATE_POST, FETCH_POSTS_REQUEST, FETCH_POSTS_SUCCESS, FETCH_POSTS_FAILURE } from '../types';
-import { Post } from '../types/postTypes';
+import {Dispatch} from 'redux';
+import {
+  PostActionTypes,
+  ADD_POST,
+  DELETE_POST,
+  UPDATE_POST,
+  FETCH_POSTS_REQUEST,
+  FETCH_POSTS_SUCCESS,
+  FETCH_POSTS_FAILURE,
+} from '../types';
+import {IPost} from '../types/postTypes';
+import {BASE_URL} from '../../../links';
+import {ThunkAction} from 'redux-thunk';
+import {RootState} from '../store';
 
 // Action Creators
-export const addPost = (post: Post) => {
+export const addPost = (post: IPost) => {
   return async (dispatch: Dispatch<PostActionTypes>) => {
     try {
       const response = await axios.post('/posts', post);
@@ -27,13 +38,13 @@ export const deletePost = (postId: number) => {
         payload: postId,
       });
       console.log('Post deleted successfully');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting post:', error.message);
     }
   };
 };
 
-export const updatePost = (post: Post) => {
+export const updatePost = (post: IPost) => {
   return async (dispatch: Dispatch<PostActionTypes>) => {
     try {
       const response = await axios.put(`/posts/${post.id}`, post);
@@ -42,23 +53,28 @@ export const updatePost = (post: Post) => {
         payload: response.data,
       });
       console.log('Post updated successfully');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating post:', error.message);
     }
   };
 };
 
 // Async Action Creator
-export const fetchPosts = () => {
-  return async (dispatch: Dispatch<PostActionTypes>) => {
-    dispatch({ type: FETCH_POSTS_REQUEST });
+export const fetchPosts = (): ThunkAction<
+  Promise<void>,
+  RootState,
+  unknown,
+  PostActionTypes
+> => {
+  return async (dispatch: Dispatch<PostActionTypes>): Promise<void> => {
+    dispatch({type: FETCH_POSTS_REQUEST});
     try {
-      const response = await axios.get('/posts');
+      const response = await axios.get(`${BASE_URL}/posts`);
       dispatch({
         type: FETCH_POSTS_SUCCESS,
         payload: response.data,
       });
-    } catch (error) {
+    } catch (error: any) {
       dispatch({
         type: FETCH_POSTS_FAILURE,
         payload: error.message,

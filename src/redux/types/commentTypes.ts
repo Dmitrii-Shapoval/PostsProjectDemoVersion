@@ -1,20 +1,24 @@
 import { ADD_COMMENT, DELETE_COMMENT, UPDATE_COMMENT, FETCH_COMMENTS_REQUEST, FETCH_COMMENTS_SUCCESS, FETCH_COMMENTS_FAILURE } from './actionTypes';
 
-export interface Comment {
+export interface IComment {
   id: number;
   postId: number;
   text: string;
 }
 
 export interface CommentState {
-  comments: Comment[];
+  comments: IComment[];
   loading: boolean;
   error: string | null;
 }
 
+export interface PostId {
+  postId: number;
+}
+
 interface AddCommentAction {
   type: typeof ADD_COMMENT;
-  payload: Comment;
+  payload: IComment;
 }
 
 interface DeleteCommentAction {
@@ -24,7 +28,7 @@ interface DeleteCommentAction {
 
 interface UpdateCommentAction {
   type: typeof UPDATE_COMMENT;
-  payload: Comment;
+  payload: IComment;
 }
 
 interface FetchCommentsRequestAction {
@@ -33,7 +37,7 @@ interface FetchCommentsRequestAction {
 
 interface FetchCommentsSuccessAction {
   type: typeof FETCH_COMMENTS_SUCCESS;
-  payload: Comment[];
+  payload: IComment[];
 }
 
 interface FetchCommentsFailureAction {
