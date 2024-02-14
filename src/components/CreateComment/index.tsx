@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Icon,
   styles,
@@ -8,22 +7,36 @@ import {
   CommentCreationWrapper,
   CommentCreationContainer,
 } from './styles.ts';
-interface iProps {
+import React from 'react';
+import {useDispatch} from 'react-redux';
+import {ToastAndroid} from 'react-native';
+import {ThunkDispatch} from 'redux-thunk';
+import {addComment, CommentActionTypes, IComment, RootState} from '../../redux';
+interface IProps {
   postId: number;
-  commentCreateHandler: any;
 }
 
-export default ({commentCreateHandler, postId}: iProps) => {
+export default ({postId}: IProps) => {
+  const dispatch =
+    useDispatch<ThunkDispatch<RootState, undefined, CommentActionTypes>>();
   const {shadowStyles, shadowContainerStyles} = styles;
   const [descriptionText, setDescriptionText] = React.useState<string>('');
-  const saveChangeHandler = (): void => {
-    commentCreateHandler({
+
+  const saveChangeHandler = async (): Promise<void> => {
+    const newData: IComment = {
       id: Date.now(),
       postId,
       text: descriptionText,
-    });
-    setDescriptionText('');
+    };
+    try {
+      await dispatch(addComment(newData));
+      setDescriptionText('');
+      ToastAndroid.show('Comment added successfully', ToastAndroid.SHORT);
+    } catch (error: any) {
+      ToastAndroid.show('Error adding comment', ToastAndroid.SHORT);
+    }
   };
+
   return (
     <ShadowWrapper
       distance={15}
@@ -37,7 +50,7 @@ export default ({commentCreateHandler, postId}: iProps) => {
             multiline
             onChangeText={(text: string) => setDescriptionText(text)}
             value={descriptionText}
-            placeholder="Введите комментарий"
+            placeholder="Enter your comment"
             maxLength={800}
             placeholderTextColor="#847878"
             cursorColor="#757072"

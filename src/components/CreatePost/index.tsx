@@ -1,5 +1,3 @@
-import React from 'react';
-import {Modal} from 'react-native';
 import {
   Icon,
   Title,
@@ -11,14 +9,20 @@ import {
   CreatePostWrapper,
   CreatePostContainer,
 } from './styles.ts';
+import React from 'react';
+import {useDispatch} from 'react-redux';
+import {ThunkDispatch} from 'redux-thunk';
+import {Modal, ToastAndroid} from 'react-native';
 import RectangularButton from '../RectangularButton';
+import {addPost, IPost, PostActionTypes, RootState} from '../../redux';
 
-interface iProps {
+interface IProps {
   visible: boolean;
   visibilityHandler: any;
-  postCreateHandler: any;
 }
-export default ({visible, visibilityHandler, postCreateHandler}: iProps) => {
+export default ({visible, visibilityHandler}: IProps) => {
+  const dispatch =
+    useDispatch<ThunkDispatch<RootState, undefined, PostActionTypes>>();
   const [titleText, setTitleText] = React.useState<string>('');
   const [descriptionText, setDescriptionText] = React.useState<string>('');
   const windowCloseHandler = (): void => {
@@ -26,15 +30,22 @@ export default ({visible, visibilityHandler, postCreateHandler}: iProps) => {
     setTitleText('');
     setDescriptionText('');
   };
-  const saveChangeHandler = (): void => {
-    postCreateHandler({
-      id: Date.now(),
-      title: titleText,
-      body: descriptionText,
-    });
-    visibilityHandler();
-    setTitleText('');
-    setDescriptionText('');
+
+  const saveChangeHandler = async (): Promise<void> => {
+    try {
+      const newData: IPost = {
+        id: Date.now(),
+        title: titleText,
+        body: descriptionText,
+      };
+      await dispatch(addPost(newData));
+      visibilityHandler();
+      setTitleText('');
+      setDescriptionText('');
+      ToastAndroid.show('Post added successfully', ToastAndroid.SHORT);
+    } catch (error: any) {
+      ToastAndroid.show('Error adding post', ToastAndroid.SHORT);
+    }
   };
 
   return (
@@ -42,7 +53,7 @@ export default ({visible, visibilityHandler, postCreateHandler}: iProps) => {
       <CreatePostWrapper>
         <CreatePostContainer>
           <TitleContainer>
-            <Title>COЗДАТЬ НОВЫЙ ПОСТ</Title>
+            <Title>CREATE NEW POST</Title>
             <IconContainer onPress={windowCloseHandler}>
               <Icon icon="xmark" size={22} />
             </IconContainer>
@@ -50,7 +61,7 @@ export default ({visible, visibilityHandler, postCreateHandler}: iProps) => {
           <InputContainer>
             <InputTitle
               autoFocus={true}
-              placeholder="Введите заголовок поста"
+              placeholder="Enter post title"
               maxLength={100}
               placeholderTextColor="#847878"
               onChangeText={(text: string) => setTitleText(text)}
@@ -64,7 +75,7 @@ export default ({visible, visibilityHandler, postCreateHandler}: iProps) => {
               numberOfLines={5}
               onChangeText={(text: string) => setDescriptionText(text)}
               value={descriptionText}
-              placeholder="Введите описание поста"
+              placeholder="Enter post description"
               maxLength={800}
               placeholderTextColor="#847878"
               cursorColor="#757072"

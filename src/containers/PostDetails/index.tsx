@@ -1,30 +1,22 @@
+import {
+  IPost,
+  PostId,
+  IComment,
+  RootState,
+  fetchComments,
+  CommentActionTypes,
+} from '../../redux';
+import {ThunkDispatch} from 'redux-thunk';
 import Header from '../../components/Header';
 import Comment from '../../components/Comment';
+import {Keyboard, Animated} from 'react-native';
 import OpenedPost from '../../components/OpenedPost';
-import {Keyboard, Animated, ToastAndroid} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import React, {useEffect, useRef, useState} from 'react';
 import CreateComment from '../../components/CreateComment';
 import {LastItem, CommentsList, CommentsWrapper} from './styles.ts';
-import {useDispatch, useSelector} from 'react-redux';
-import {
-  fetchComments,
-  RootState,
-  CommentActionTypes,
-  IComment,
-  PostId,
-  addComment,
-  updateComment,
-  deleteComment,
-  IPost,
-} from '../../redux';
-import {ThunkDispatch} from 'redux-thunk';
-interface RouteParams {
-  route: {
-    params: IPost;
-  };
-}
 
-const PostsDetails = ({route}: RouteParams) => {
+const PostsDetails = ({route}: any) => {
   const {id, title, body} = route.params;
   const dispatch =
     useDispatch<ThunkDispatch<RootState, undefined, CommentActionTypes>>();
@@ -39,12 +31,6 @@ const PostsDetails = ({route}: RouteParams) => {
   useEffect((): void => {
     dispatch(fetchComments());
   }, [dispatch]);
-
-  console.log(
-    'selectedComments',
-    comments && comments.length < 9 ? comments.length : '9+',
-    id,
-  );
 
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener(
@@ -66,35 +52,6 @@ const PostsDetails = ({route}: RouteParams) => {
       useNativeDriver: true,
     }).start();
 
-  const commentCreateHandler = async (newData: IComment): Promise<void> => {
-    try {
-      await dispatch(addComment(newData));
-      ToastAndroid.show('Comment added successfully', ToastAndroid.SHORT);
-    } catch (error: any) {
-      ToastAndroid.show('Error adding comment', ToastAndroid.SHORT);
-    }
-  };
-
-  const commentUpdateHandler = async (
-    updatedComment: IComment,
-  ): Promise<void> => {
-    try {
-      await dispatch(updateComment(updatedComment));
-      ToastAndroid.show('Comment updated successfully', ToastAndroid.SHORT);
-    } catch (error: any) {
-      ToastAndroid.show('Error updating comment', ToastAndroid.SHORT);
-    }
-  };
-
-  const commentDeletionHandler = async (commentId: number): Promise<void> => {
-    try {
-      await dispatch(deleteComment(commentId));
-      ToastAndroid.show('Comment deleted successfully', ToastAndroid.SHORT);
-    } catch (error: any) {
-      ToastAndroid.show('Error deleting comment', ToastAndroid.SHORT);
-    }
-  };
-
   const commentEditClickHandler = (commentId: number): void => {
     setPostEditClick(commentId);
   };
@@ -111,8 +68,6 @@ const PostsDetails = ({route}: RouteParams) => {
             commentId={item.id}
             description={item.text}
             commentFocusHandler={commentFocusHandler}
-            commentUpdateHandler={commentUpdateHandler}
-            commentDeletionHandler={commentDeletionHandler}
             commentEditClickHandler={commentEditClickHandler}
           />
         )}
@@ -134,10 +89,7 @@ const PostsDetails = ({route}: RouteParams) => {
           alignSelf: 'stretch',
           transform: [{translateY: slideAnimation}],
         }}>
-        <CreateComment
-          postId={id}
-          commentCreateHandler={commentCreateHandler}
-        />
+        <CreateComment postId={id} />
       </Animated.View>
     </CommentsWrapper>
   );

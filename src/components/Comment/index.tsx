@@ -1,4 +1,3 @@
-import React, {useState} from 'react';
 import {
   Icon,
   EditButton,
@@ -11,15 +10,24 @@ import {
   CommentCountContainer,
   RigthButtonsContainer,
 } from './styles.ts';
+import {
+  IComment,
+  RootState,
+  deleteComment,
+  updateComment,
+  CommentActionTypes,
+} from '../../redux';
+import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {ToastAndroid} from 'react-native';
+import {ThunkDispatch} from 'redux-thunk';
 
 interface iProps {
-  postId: string;
+  postId: number;
   editMode: boolean;
   commentId: number;
   description: string;
   commentFocusHandler: any;
-  commentUpdateHandler: any;
-  commentDeletionHandler: any;
   commentEditClickHandler: any;
 }
 export default ({
@@ -28,22 +36,38 @@ export default ({
   commentId,
   description,
   commentFocusHandler,
-  commentUpdateHandler,
-  commentDeletionHandler,
   commentEditClickHandler,
 }: iProps) => {
+  const dispatch =
+    useDispatch<ThunkDispatch<RootState, undefined, CommentActionTypes>>();
   const [contentSize, setContentSize] = useState<number>(100);
   const [descriptionHeight, setDescriptionHeight] = useState<number>(500);
   const [descriptionText, setDescriptionText] =
     React.useState<string>(description);
-  const commentSavedHandler = (): void => {
-    commentEditClickHandler(0);
-    commentUpdateHandler({
-      id: commentId,
-      postId: postId,
-      text: descriptionText,
-    });
+
+  const commentDeletionHandler = async (): Promise<void> => {
+    try {
+      await dispatch(deleteComment(commentId));
+      ToastAndroid.show('Comment deleted successfully', ToastAndroid.SHORT);
+    } catch (error: any) {
+      ToastAndroid.show('Error deleting comment', ToastAndroid.SHORT);
+    }
   };
+  const commentSavedHandler = async (): Promise<void> => {
+    const newData: IComment = {
+      id: commentId,
+      postId,
+      text: descriptionText,
+    };
+    try {
+      await dispatch(updateComment(newData));
+      commentEditClickHandler(0);
+      ToastAndroid.show('Comment updated successfully', ToastAndroid.SHORT);
+    } catch (error: any) {
+      ToastAndroid.show('Error updating comment', ToastAndroid.SHORT);
+    }
+  };
+
   const cancelEventHandler = (): void => {
     commentEditClickHandler(0);
     setDescriptionText(description);
@@ -79,7 +103,7 @@ export default ({
             onChangeText={(text: string) => setDescriptionText(text)}
             onFocus={commentFocusHandler}
             value={descriptionText}
-            placeholder="Введите описание поста"
+            placeholder="Enter your comment"
             maxLength={800}
             placeholderTextColor="#847878"
             cursorColor="#757072"
@@ -93,7 +117,7 @@ export default ({
         </ContentContainer>
       )}
       <RigthButtonsContainer>
-        <CloseButton onPress={commentDeletionHandler.bind(this, commentId)}>
+        <CloseButton onPress={commentDeletionHandler}>
           {editMode || <Icon icon="xmark" size={24} />}
         </CloseButton>
         {editMode ? (

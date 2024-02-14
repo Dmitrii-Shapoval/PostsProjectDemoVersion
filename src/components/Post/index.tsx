@@ -1,4 +1,3 @@
-import React, {useState} from 'react';
 import {
   Icon,
   InputTitle,
@@ -14,6 +13,17 @@ import {
   RigthButtonsContainer,
   CommentCountContainer,
 } from './styles.ts';
+import {
+  IPost,
+  RootState,
+  updatePost,
+  deletePost,
+  PostActionTypes,
+} from '../../redux';
+import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {ToastAndroid} from 'react-native';
+import {ThunkDispatch} from 'redux-thunk';
 
 interface iProps {
   title: string;
@@ -23,8 +33,6 @@ interface iProps {
   commentCount?: number;
   postClickHandler: any;
   postFocusHandler: any;
-  postUpdateHandler: any;
-  postDeletionHandler: any;
   commentEditClickHandler: any;
 }
 export default ({
@@ -35,24 +43,43 @@ export default ({
   commentCount,
   postClickHandler,
   postFocusHandler,
-  postUpdateHandler,
-  postDeletionHandler,
   commentEditClickHandler,
 }: iProps) => {
+  const dispatch =
+    useDispatch<ThunkDispatch<RootState, undefined, PostActionTypes>>();
   const [titleText, setTitleText] = React.useState<string>(title);
   const [contentSize, setContentSize] = useState<number>(100);
   const [titleHeight, setTitleHeight] = useState<number>(100);
   const [descriptionHeight, setDescriptionHeight] = useState<number>(500);
   const [descriptionText, setDescriptionText] =
     React.useState<string>(description);
+
+  const postSavedHandler = async (): Promise<void> => {
+    commentEditClickHandler(0);
+    const updatedPost: IPost = {
+      id: postId,
+      title: titleText,
+      body: descriptionText,
+    };
+    try {
+      await dispatch(updatePost(updatedPost));
+      ToastAndroid.show('Post updated successfully', ToastAndroid.SHORT);
+    } catch (error: any) {
+      ToastAndroid.show('Error updating post', ToastAndroid.SHORT);
+    }
+  };
   const cancelEventHandler = (): void => {
     setTitleText(title);
     setDescriptionText(description);
     commentEditClickHandler(0);
   };
-  const postSavedHandler = (): void => {
-    commentEditClickHandler(0);
-    postUpdateHandler({id: postId, title: titleText, body: descriptionText});
+  const postDeletionHandler = async (): Promise<void> => {
+    try {
+      await dispatch(deletePost(postId));
+      ToastAndroid.show('Post deleted successfully', ToastAndroid.SHORT);
+    } catch (error: any) {
+      ToastAndroid.show('Error deleting post', ToastAndroid.SHORT);
+    }
   };
 
   const contentHeightHandler = (e: any): void => {
@@ -96,7 +123,7 @@ export default ({
             cursorColor="#757072"
             onFocus={postFocusHandler}
             placeholderTextColor="#847878"
-            placeholder="Введите заголовок"
+            placeholder="Enter post title"
             onChangeText={(text: string) => setTitleText(text)}
           />
           <InputDescription
@@ -107,7 +134,7 @@ export default ({
             value={descriptionText}
             height={descriptionHeight}
             onFocus={postFocusHandler}
-            placeholder="Введите описание поста"
+            placeholder="Enter post description"
             onChangeText={(text: string) => setDescriptionText(text)}
             placeholderTextColor="#847878"
           />
@@ -123,7 +150,7 @@ export default ({
         </ContentContainer>
       )}
       <RigthButtonsContainer>
-        <CloseButton onPress={postDeletionHandler.bind(this, postId)}>
+        <CloseButton onPress={postDeletionHandler}>
           {editMode || <Icon icon="xmark" size={24} />}
         </CloseButton>
         {editMode ? (

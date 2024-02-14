@@ -1,21 +1,13 @@
 import Post from '../../components/Post';
 import {ThunkDispatch} from 'redux-thunk';
 import Header from '../../components/Header';
+import {Animated, Keyboard} from 'react-native';
 import CreatePost from '../../components/CreatePost';
-import RoundButton from '../../components/RoundВutton';
-import {Animated, Keyboard, ToastAndroid} from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
-import {Footer, LastItem, PostsList, PostsWrapper, Icon} from './styles.ts';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  fetchPosts,
-  RootState,
-  PostActionTypes,
-  IPost,
-  addPost,
-  updatePost,
-  deletePost,
-} from '../../redux';
+import RoundButton from '../../components/RoundВutton';
+import React, {useEffect, useRef, useState} from 'react';
+import {fetchPosts, RootState, PostActionTypes, IPost} from '../../redux';
+import {Footer, LastItem, PostsList, PostsWrapper, Icon} from './styles.ts';
 
 const Posts = ({navigation}: any) => {
   const dispatch =
@@ -55,33 +47,6 @@ const Posts = ({navigation}: any) => {
   const postEditClickHandler = (postId: number): void => {
     setPostEditClick(postId);
   };
-
-  const postDeletionHandler = async (postId: number): Promise<void> => {
-    try {
-      await dispatch(deletePost(postId));
-      ToastAndroid.show('Post deleted successfully', ToastAndroid.SHORT);
-    } catch (error: any) {
-      ToastAndroid.show('Error deleting post', ToastAndroid.SHORT);
-    }
-  };
-
-  const postUpdateHandler = async (updatedPost: IPost): Promise<void> => {
-    try {
-      await dispatch(updatePost(updatedPost));
-      ToastAndroid.show('Post updated successfully', ToastAndroid.SHORT);
-    } catch (error: any) {
-      ToastAndroid.show('Error updating post', ToastAndroid.SHORT);
-    }
-  };
-
-  const postCreateHandler = async (newData: IPost): Promise<void> => {
-    try {
-      await dispatch(addPost(newData));
-      ToastAndroid.show('Post added successfully', ToastAndroid.SHORT);
-    } catch (error: any) {
-      ToastAndroid.show('Error adding post', ToastAndroid.SHORT);
-    }
-  };
   const postFocusHandler = (): void => {
     Animated.timing(slideAnimation, {
       toValue: 200,
@@ -103,8 +68,6 @@ const Posts = ({navigation}: any) => {
             description={item.body}
             postFocusHandler={postFocusHandler}
             postClickHandler={postClickHandler.bind(this, item)}
-            postUpdateHandler={postUpdateHandler}
-            postDeletionHandler={postDeletionHandler}
             commentEditClickHandler={postEditClickHandler}
           />
         )}
@@ -126,7 +89,6 @@ const Posts = ({navigation}: any) => {
       <CreatePost
         visible={createPostVisible}
         visibilityHandler={visibilitySwitchHandler}
-        postCreateHandler={postCreateHandler}
       />
     </PostsWrapper>
   );
