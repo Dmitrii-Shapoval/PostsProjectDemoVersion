@@ -1,7 +1,7 @@
 import {
-  CommentActionTypes,
-  CommentState,
   IComment,
+  CommentState,
+  CommentActionTypes,
   ADD_COMMENT,
   DELETE_COMMENT,
   UPDATE_COMMENT,

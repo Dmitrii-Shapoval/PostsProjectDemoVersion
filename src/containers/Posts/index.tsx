@@ -12,8 +12,8 @@ import {Footer, LastItem, PostsList, PostsWrapper, Icon} from './styles.ts';
 const Posts = ({navigation}: any) => {
   const dispatch =
     useDispatch<ThunkDispatch<RootState, undefined, PostActionTypes>>();
-  const posts = useSelector((state: RootState) => state.posts.posts);
   const slideAnimation = useRef(new Animated.Value(0)).current;
+  const posts = useSelector((state: RootState) => state.posts.posts);
   const [postEditClick, setPostEditClick] = useState<number>(0);
   const [createPostVisible, setCreatePostVisible] = useState<boolean>(false);
 

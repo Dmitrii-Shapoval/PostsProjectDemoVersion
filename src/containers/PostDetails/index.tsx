@@ -1,5 +1,4 @@
 import {
-  IPost,
   PostId,
   IComment,
   RootState,

@@ -1,4 +1,11 @@
-import { ADD_POST, DELETE_POST, UPDATE_POST, FETCH_POSTS_REQUEST, FETCH_POSTS_SUCCESS, FETCH_POSTS_FAILURE } from './actionTypes';
+import {
+  ADD_POST,
+  DELETE_POST,
+  UPDATE_POST,
+  FETCH_POSTS_REQUEST,
+  FETCH_POSTS_SUCCESS,
+  FETCH_POSTS_FAILURE,
+} from './actionTypes';
 
 export interface IPost {
   id: number;

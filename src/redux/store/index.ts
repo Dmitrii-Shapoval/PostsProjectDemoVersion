@@ -1,7 +1,7 @@
-import {createStore, combineReducers, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
+import {AppState} from '../types';
 import {commentReducer, postReducer} from '../reducers';
-import {AppState} from '../types'; // Импортируем тип AppState из наших типов
+import {createStore, combineReducers, applyMiddleware} from 'redux';
 
 const rootReducer = combineReducers({
   comments: commentReducer,

@@ -1,5 +1,3 @@
-import axios from 'axios';
-import {Dispatch} from 'redux';
 import {
   PostActionTypes,
   ADD_POST,
@@ -10,16 +8,21 @@ import {
   FETCH_POSTS_FAILURE,
 } from '../types';
 import {IPost} from '../types';
-import {BASE_URL} from '../../../links';
-import {ThunkAction} from 'redux-thunk';
+import {Dispatch} from 'redux';
 import {RootState} from '../store';
 import {Alert} from 'react-native';
+import {BASE_URL} from '../../../links';
+import {ThunkAction} from 'redux-thunk';
+import axios, {AxiosResponse} from 'axios';
 
 // Action Creators
 export const addPost = (post: IPost) => {
-  return async (dispatch: Dispatch<PostActionTypes>) => {
+  return async (dispatch: Dispatch<PostActionTypes>): Promise<void> => {
     try {
-      const response = await axios.post(`${BASE_URL}/posts`, post);
+      const response: AxiosResponse<any, any> = await axios.post(
+        `${BASE_URL}/posts`,
+        post,
+      );
       dispatch({
         type: ADD_POST,
         payload: response.data,
@@ -32,7 +35,7 @@ export const addPost = (post: IPost) => {
 };
 
 export const deletePost = (postId: number) => {
-  return async (dispatch: Dispatch<PostActionTypes>) => {
+  return async (dispatch: Dispatch<PostActionTypes>): Promise<void> => {
     try {
       await axios.delete(`${BASE_URL}/posts/${postId}`);
       dispatch({
@@ -54,9 +57,12 @@ export const deletePost = (postId: number) => {
 };
 
 export const updatePost = (post: IPost) => {
-  return async (dispatch: Dispatch<PostActionTypes>) => {
+  return async (dispatch: Dispatch<PostActionTypes>): Promise<void> => {
     try {
-      const response = await axios.put(`${BASE_URL}/posts/${post.id}`, post);
+      const response: AxiosResponse<any, any> = await axios.put(
+        `${BASE_URL}/posts/${post.id}`,
+        post,
+      );
       dispatch({
         type: UPDATE_POST,
         payload: response.data,
@@ -85,7 +91,9 @@ export const fetchPosts = (): ThunkAction<
   return async (dispatch: Dispatch<PostActionTypes>): Promise<void> => {
     dispatch({type: FETCH_POSTS_REQUEST});
     try {
-      const response = await axios.get(`${BASE_URL}/posts`);
+      const response: AxiosResponse<any, any> = await axios.get(
+        `${BASE_URL}/posts`,
+      );
       dispatch({
         type: FETCH_POSTS_SUCCESS,
         payload: response.data,

@@ -1,7 +1,6 @@
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
-
+>**Note** Clone the repository and run `npm install` or `yarn install`
 ## Step 1: Start the Metro Server
 
 First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
@@ -46,3 +45,9 @@ Or press the `i` key in the running **Metro** server window.
 If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+
+
+## APK
+
+You can find the **APK** for testing on a real device in the `_.abb-bundle_and_apk-release` folder,
+which is located in the project root along the path: `PostsProjectDemoVersion/_.abb-bundle_and_apk-release/app-release.apk`

@@ -1,5 +1,3 @@
-import axios from 'axios';
-import {Dispatch} from 'redux';
 import {
   CommentActionTypes,
   ADD_COMMENT,
@@ -9,15 +7,20 @@ import {
   FETCH_COMMENTS_SUCCESS,
   FETCH_COMMENTS_FAILURE,
 } from '../types';
-import {BASE_URL} from '../../../links';
+import {Dispatch} from 'redux';
 import {RootState} from '../store';
-import {ThunkAction} from 'redux-thunk';
 import {Alert} from 'react-native';
+import {BASE_URL} from '../../../links';
+import {ThunkAction} from 'redux-thunk';
+import axios, {AxiosResponse} from 'axios';
 
 export const addComment = (comment: any) => {
-  return async (dispatch: Dispatch<CommentActionTypes>) => {
+  return async (dispatch: Dispatch<CommentActionTypes>): Promise<void> => {
     try {
-      const response = await axios.post(`${BASE_URL}/comments`, comment);
+      const response: AxiosResponse<any, any> = await axios.post(
+        `${BASE_URL}/comments`,
+        comment,
+      );
       dispatch({
         type: ADD_COMMENT,
         payload: response.data,
@@ -30,7 +33,7 @@ export const addComment = (comment: any) => {
 };
 
 export const deleteComment = (commentId: number) => {
-  return async (dispatch: Dispatch<CommentActionTypes>) => {
+  return async (dispatch: Dispatch<CommentActionTypes>): Promise<void> => {
     try {
       await axios.delete(`${BASE_URL}/comments/${commentId}`);
       dispatch({
@@ -52,9 +55,9 @@ export const deleteComment = (commentId: number) => {
 };
 
 export const updateComment = (comment: any) => {
-  return async (dispatch: Dispatch<CommentActionTypes>) => {
+  return async (dispatch: Dispatch<CommentActionTypes>): Promise<void> => {
     try {
-      const response = await axios.put(
+      const response: AxiosResponse<any, any> = await axios.put(
         `${BASE_URL}/comments/${comment.id}`,
         comment,
       );
@@ -85,7 +88,9 @@ export const fetchComments = (): ThunkAction<
   return async (dispatch: Dispatch<CommentActionTypes>): Promise<void> => {
     dispatch({type: FETCH_COMMENTS_REQUEST});
     try {
-      const response = await axios.get(`${BASE_URL}/comments`);
+      const response: AxiosResponse<any, any> = await axios.get(
+        `${BASE_URL}/comments`,
+      );
       dispatch({
         type: FETCH_COMMENTS_SUCCESS,
         payload: response.data,

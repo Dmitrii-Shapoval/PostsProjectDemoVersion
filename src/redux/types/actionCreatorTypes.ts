@@ -1,6 +1,6 @@
-import {ThunkAction} from 'redux-thunk';
 import {Action} from 'redux';
 import {AppState} from './stateTypes';
+import {ThunkAction} from 'redux-thunk';
 import {PostActionTypes} from './postTypes';
 import {CommentActionTypes} from './commentTypes';
 

@@ -1,13 +1,13 @@
 import {
-  PostActionTypes,
+  IPost,
   PostState,
+  PostActionTypes,
   ADD_POST,
   DELETE_POST,
   UPDATE_POST,
   FETCH_POSTS_REQUEST,
   FETCH_POSTS_SUCCESS,
   FETCH_POSTS_FAILURE,
-  IPost,
 } from '../types';
 
 const initialState: PostState = {
