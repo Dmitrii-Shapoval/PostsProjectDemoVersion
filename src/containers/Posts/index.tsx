@@ -1,32 +1,33 @@
-import axios from 'axios';
-import {BASE_URL} from "../../../links";
 import Post from '../../components/Post';
+import {ThunkDispatch} from 'redux-thunk';
 import Header from '../../components/Header';
-import {iPost} from '../../assets/data/DATA.ts';
 import CreatePost from '../../components/CreatePost';
 import RoundButton from '../../components/RoundВutton';
-import {Alert, Animated, Keyboard} from 'react-native';
+import {Animated, Keyboard, ToastAndroid} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {Footer, LastItem, PostsList, PostsWrapper, Icon} from './styles.ts';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  fetchPosts,
+  RootState,
+  PostActionTypes,
+  IPost,
+  addPost,
+  updatePost,
+  deletePost,
+} from '../../redux';
 
-const Posts = ({navigation, route}: any) => {
+const Posts = ({navigation}: any) => {
+  const dispatch =
+    useDispatch<ThunkDispatch<RootState, undefined, PostActionTypes>>();
+  const posts = useSelector((state: RootState) => state.posts.posts);
   const slideAnimation = useRef(new Animated.Value(0)).current;
   const [postEditClick, setPostEditClick] = useState<number>(0);
-  const [deleteError, setDeleteError] = useState<boolean>(false);
-  const [posts, setPosts] = useState<Array<iPost> | null>(null);
   const [createPostVisible, setCreatePostVisible] = useState<boolean>(false);
 
-  const {fetchPosts} = route.params;
-
-  useEffect(() => {
-    fetchPosts()
-      .then((responseData: any) => {
-        setPosts(responseData);
-      })
-      .catch((error: any) => {
-        console.error('Error loading data:', error);
-      });
-  }, [fetchPosts]);
+  useEffect((): void => {
+    dispatch(fetchPosts());
+  }, [dispatch]);
 
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener(
@@ -44,7 +45,7 @@ const Posts = ({navigation, route}: any) => {
     };
   }, [slideAnimation]);
 
-  const postClickHandler = (item: iPost): void => {
+  const postClickHandler = (item: IPost): void => {
     navigation.navigate('PostDetails', item);
   };
 
@@ -57,52 +58,30 @@ const Posts = ({navigation, route}: any) => {
 
   const postDeletionHandler = async (postId: number): Promise<void> => {
     try {
-      await axios.delete(`${BASE_URL}/posts/${postId}`);
-      setPosts((prevState: Array<iPost> | null): any =>
-        prevState?.filter(({id}: iPost): boolean => id !== postId),
-      );
-      console.log('Post deleted successfully');
+      await dispatch(deletePost(postId));
+      ToastAndroid.show('Post deleted successfully', ToastAndroid.SHORT);
     } catch (error: any) {
-      console.error('Error deleting post:', error.message);
-      setDeleteError(true);
+      ToastAndroid.show('Error deleting post', ToastAndroid.SHORT);
     }
   };
 
-  const postUpdateHandler = async (updatedPost: iPost): Promise<void> => {
+  const postUpdateHandler = async (updatedPost: IPost): Promise<void> => {
     try {
-      const response = await axios.put(
-        `${BASE_URL}/posts/${updatedPost.id}`,
-        updatedPost,
-      );
-      const modifiedPost: iPost = response.data;
-      setPosts(
-        (prevState: any): Array<iPost> =>
-          prevState.map((post: iPost): iPost => {
-            if (post.id === modifiedPost.id) {
-              return modifiedPost;
-            }
-            return post;
-          }),
-      );
-      console.log('Comment updated successfully:', modifiedPost);
+      await dispatch(updatePost(updatedPost));
+      ToastAndroid.show('Post updated successfully', ToastAndroid.SHORT);
     } catch (error: any) {
-      console.error('Error updating post:', error.message);
+      ToastAndroid.show('Error updating post', ToastAndroid.SHORT);
     }
   };
 
-  const postCreateHandler = async (newData: iPost): Promise<void> => {
+  const postCreateHandler = async (newData: IPost): Promise<void> => {
     try {
-      const response = await axios.post(`${BASE_URL}/posts`, newData);
-      const addedPosts: iPost = response.data;
-      setPosts((prevState: Array<iPost> | null): any =>
-        prevState ? [addedPosts, ...prevState] : [addedPosts],
-      );
-      console.log('Post added successfully', addedPosts);
+      await dispatch(addPost(newData));
+      ToastAndroid.show('Post added successfully', ToastAndroid.SHORT);
     } catch (error: any) {
-      console.error('Error adding post:', error.message);
+      ToastAndroid.show('Error adding post', ToastAndroid.SHORT);
     }
   };
-
   const postFocusHandler = (): void => {
     Animated.timing(slideAnimation, {
       toValue: 200,
@@ -110,19 +89,6 @@ const Posts = ({navigation, route}: any) => {
       useNativeDriver: true,
     }).start();
   };
-
-  useEffect(() => {
-    if (deleteError) {
-      Alert.alert(
-        'Delete Error',
-        `
-          An error occurred while deleting the post. This error occurs only when attempting to delete new posts that were added during the current session with the fake server.
-         
-         The deletion functionality is available only for posts that already exist on the server. Please keep this in mind when working with posts.`,
-        [{text: 'OK', onPress: () => setDeleteError(false)}],
-      );
-    }
-  }, [deleteError]);
 
   return (
     <PostsWrapper>

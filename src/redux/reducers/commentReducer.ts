@@ -1,6 +1,7 @@
 import {
   CommentActionTypes,
   CommentState,
+  IComment,
   ADD_COMMENT,
   DELETE_COMMENT,
   UPDATE_COMMENT,
@@ -41,20 +42,21 @@ const commentReducer = (
     case ADD_COMMENT:
       return {
         ...state,
-        comments: [...state.comments, action.payload],
+        comments: [action.payload, ...state.comments],
       };
     case DELETE_COMMENT:
       return {
         ...state,
         comments: state.comments.filter(
-          comment => comment.id !== action.payload,
+          (comment: IComment): boolean => comment.id !== action.payload,
         ),
       };
     case UPDATE_COMMENT:
       return {
         ...state,
-        comments: state.comments.map(comment =>
-          comment.id === action.payload.id ? action.payload : comment,
+        comments: state.comments.map(
+          (comment: IComment): IComment =>
+            comment.id === action.payload.id ? action.payload : comment,
         ),
       };
     default:

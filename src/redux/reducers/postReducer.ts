@@ -7,6 +7,7 @@ import {
   FETCH_POSTS_REQUEST,
   FETCH_POSTS_SUCCESS,
   FETCH_POSTS_FAILURE,
+  IPost,
 } from '../types';
 
 const initialState: PostState = {
@@ -41,18 +42,21 @@ const postReducer = (
     case ADD_POST:
       return {
         ...state,
-        posts: [...state.posts, action.payload],
+        posts: [action.payload, ...state.posts],
       };
     case DELETE_POST:
       return {
         ...state,
-        posts: state.posts.filter(post => post.id !== action.payload),
+        posts: state.posts.filter(
+          (post: IPost): boolean => post.id !== action.payload,
+        ),
       };
     case UPDATE_POST:
       return {
         ...state,
-        posts: state.posts.map(post =>
-          post.id === action.payload.id ? action.payload : post,
+        posts: state.posts.map(
+          (post: IPost): IPost =>
+            post.id === action.payload.id ? action.payload : post,
         ),
       };
     default:
