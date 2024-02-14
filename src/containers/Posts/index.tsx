@@ -1,17 +1,33 @@
-import {Animated, Keyboard} from 'react-native';
 import Post from '../../components/Post';
+import {ThunkDispatch} from 'redux-thunk';
 import Header from '../../components/Header';
-import React, { useEffect, useRef, useState } from "react";
 import CreatePost from '../../components/CreatePost';
-import {DATA, iPost} from '../../assets/data/DATA.ts';
 import RoundButton from '../../components/RoundВutton';
-import {NavigationProp} from '@react-navigation/native';
+import {Animated, Keyboard, ToastAndroid} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 import {Footer, LastItem, PostsList, PostsWrapper, Icon} from './styles.ts';
-const Posts = ({navigation}: {navigation: NavigationProp<any>}) => {
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  fetchPosts,
+  RootState,
+  PostActionTypes,
+  IPost,
+  addPost,
+  updatePost,
+  deletePost,
+} from '../../redux';
+
+const Posts = ({navigation}: any) => {
+  const dispatch =
+    useDispatch<ThunkDispatch<RootState, undefined, PostActionTypes>>();
+  const posts = useSelector((state: RootState) => state.posts.posts);
   const slideAnimation = useRef(new Animated.Value(0)).current;
-  const [data, setData] = useState<Array<iPost>>(DATA);
   const [postEditClick, setPostEditClick] = useState<number>(0);
   const [createPostVisible, setCreatePostVisible] = useState<boolean>(false);
+
+  useEffect((): void => {
+    dispatch(fetchPosts());
+  }, [dispatch]);
 
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener(
@@ -29,7 +45,7 @@ const Posts = ({navigation}: {navigation: NavigationProp<any>}) => {
     };
   }, [slideAnimation]);
 
-  const postClickHandler = (item: iPost): void => {
+  const postClickHandler = (item: IPost): void => {
     navigation.navigate('PostDetails', item);
   };
 
@@ -40,30 +56,32 @@ const Posts = ({navigation}: {navigation: NavigationProp<any>}) => {
     setPostEditClick(postId);
   };
 
-  const postDeletionHandler = (postId: number): void => {
-    setData((prevState: Array<object>): any => {
-      const newData: any = [...prevState];
-      return newData.filter((item: any): boolean => item.id !== postId);
-    });
+  const postDeletionHandler = async (postId: number): Promise<void> => {
+    try {
+      await dispatch(deletePost(postId));
+      ToastAndroid.show('Post deleted successfully', ToastAndroid.SHORT);
+    } catch (error: any) {
+      ToastAndroid.show('Error deleting post', ToastAndroid.SHORT);
+    }
   };
 
-  const postUpdateHandler = (newData: iPost): void => {
-    setData((prevState: Array<iPost>): any => {
-      return prevState.map((item: iPost): iPost => {
-        if (item.id === newData.id) {
-          return {...item, ...newData};
-        }
-        return item;
-      });
-    });
+  const postUpdateHandler = async (updatedPost: IPost): Promise<void> => {
+    try {
+      await dispatch(updatePost(updatedPost));
+      ToastAndroid.show('Post updated successfully', ToastAndroid.SHORT);
+    } catch (error: any) {
+      ToastAndroid.show('Error updating post', ToastAndroid.SHORT);
+    }
   };
 
-  const postCreateHandler = (newData: iPost): void => {
-    setData((prevState: Array<iPost>): any => {
-      return [newData, ...prevState];
-    });
+  const postCreateHandler = async (newData: IPost): Promise<void> => {
+    try {
+      await dispatch(addPost(newData));
+      ToastAndroid.show('Post added successfully', ToastAndroid.SHORT);
+    } catch (error: any) {
+      ToastAndroid.show('Error adding post', ToastAndroid.SHORT);
+    }
   };
-
   const postFocusHandler = (): void => {
     Animated.timing(slideAnimation, {
       toValue: 200,
@@ -76,7 +94,7 @@ const Posts = ({navigation}: {navigation: NavigationProp<any>}) => {
     <PostsWrapper>
       <Header title="Posts App Demo" backButton={false} />
       <PostsList
-        data={data}
+        data={posts}
         renderItem={({item}: any) => (
           <Post
             title={item.title}
@@ -93,7 +111,6 @@ const Posts = ({navigation}: {navigation: NavigationProp<any>}) => {
         keyExtractor={(item: any) => item.id}
         ListFooterComponent={LastItem}
       />
-      {/*{isKeyboardVisible || (*/}
       <Animated.View
         style={{
           transform: [{translateY: slideAnimation}],
@@ -106,7 +123,6 @@ const Posts = ({navigation}: {navigation: NavigationProp<any>}) => {
           </RoundButton>
         </Footer>
       </Animated.View>
-      {/*)}*/}
       <CreatePost
         visible={createPostVisible}
         visibilityHandler={visibilitySwitchHandler}

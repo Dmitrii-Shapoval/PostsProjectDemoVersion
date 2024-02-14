@@ -14,7 +14,7 @@ interface iProps {
   title: string;
   listTitle: string;
   description: string;
-  commentNumber: number | string;
+  commentNumber: number | string | null;
 }
 
 export default ({title, description, listTitle, commentNumber}: iProps) => (
