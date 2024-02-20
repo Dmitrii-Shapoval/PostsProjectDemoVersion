@@ -1,0 +1,15 @@
+workflows:
+  build:
+    name: Build
+    scripts:
+      - name: Install dependencies
+        script: npm install -f
+      - name: Build project
+        script: npm run build
+      - name: Run tests
+        script: npm test
+      - name: Build IPA
+        script: fastlane ios build
+    artifacts:
+      - build/outputs/**/*.apk
+      - build/outputs/**/*.ipa
